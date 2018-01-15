@@ -14,3 +14,7 @@ you can test it with:
 ```
 $ make test
 ```
+or simply run:
+```
+curl -v localhost:43567
+```
