@@ -1,13 +1,18 @@
+NAME ?= node-hello
+
 install:
 	npm install
 
 build:
-	docker build -t node-hello .
+	docker build -t $(NAME) .
+
+bash: build
+	docker run -it --rm --entrypoint /bin/bash $(NAME)
 
 run: build
-	docker run -p 43567:8080 -d node-hello
+	docker run -i -t -p 43567:8080 -d $(NAME)
 
-test: build
+test:
 	curl localhost:43567
 
 clean:
