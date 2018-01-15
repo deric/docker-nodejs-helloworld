@@ -5,7 +5,7 @@ To build a container:
 $ make build
 ```
 
-and start the web add:
+Following command will start Docker image in background
 ```
 $ make run
 ```
