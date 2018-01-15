@@ -6,5 +6,8 @@
   "author": "Tomas Barton <tomas.barton@fit.cvut.cz>",
   "dependencies": {
     "express": "3.2.4"
+  },
+  "scripts": {
+    "start": "node ./index.js"
   }
 }

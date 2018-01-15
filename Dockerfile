@@ -10,4 +10,4 @@ ADD . /web
 RUN cd /web; npm install
 
 EXPOSE  8080
-CMD ["node", "/web/index.js"]
+CMD ["node", "./index.js"]
