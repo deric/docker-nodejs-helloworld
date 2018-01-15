@@ -4,10 +4,10 @@ install:
 build:
 	docker build -t node-hello .
 
-run:
+run: build
 	docker run -p 43567:8080 -d node-hello
 
-test:
+test: build
 	curl localhost:43567
 
 clean:
