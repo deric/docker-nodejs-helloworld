@@ -1,20 +1,8 @@
-# Docker node.js example app
+# Kubernetes node.js example app
 
 To build a container:
-```
-$ make build
-```
+docker build -t <name> .
 
-Following command will start Docker image in background
-```
-$ make run
-```
-
-you can test it with:
-```
-$ make test
-```
-or simply run:
-```
-curl -v localhost:43567
-```
+docker push tlitovsk/docker-nodejs-helloworld:latest
+kubectl.exe run  --image tlitovsk/docker-nodejs-helloworld:latest test
+kubectl delete deployment test
