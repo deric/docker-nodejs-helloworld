@@ -15,5 +15,6 @@ spec:
     spec:
       containers:
       - name: hello-world
-        image: tlitovsk/kubernetes-nodejs-helloworld:latest
+        image: tlitovsk/kubernetes-nodejs-helloworld:ver1
+        imagePullPolicy: Always
         
