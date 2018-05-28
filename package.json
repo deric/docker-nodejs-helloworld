@@ -8,6 +8,13 @@
     "express": "4.16.1"
   },
   "scripts": {
-    "start": "node ./index.js"
+    "start": "node ./index.js",
+    "test": "eslint index.js",
+    "coverage": "jest --collectCoverageFrom=src/**.js --coverage src"
+  },
+  "devDependencies": {
+    "eslint": "^4.9.0",
+    "eslint-config-airbnb-base": "^12.1.0",
+    "eslint-plugin-import": "^2.12.0"
   }
 }
