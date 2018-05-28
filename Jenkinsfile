@@ -12,9 +12,6 @@ node('k8s-slave') {
          sh 'npm install'
          sh 'npm test'
        }
-
-       stage('Build container'){
-       }
     }
     catch (err) {
 
