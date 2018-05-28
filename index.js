@@ -1,14 +1,14 @@
-var express = require('express');
+let express = require('express');
 
 // Constants
-var DEFAULT_PORT = 8080;
-var PORT = process.env.PORT || DEFAULT_PORT;
+const DEFAULT_PORT = 8080;
+let PORT = process.env.PORT || DEFAULT_PORT;
 
 // App
-var app = express();
+let app = express();
 app.get('/', function (req, res) {
   res.send('Hello World version 1\n');
 });
 
-app.listen(PORT,"0.0.0.0")
+app.listen(PORT, "0.0.0.0")
 console.log('Running on http://0.0.0.0:' + PORT);
