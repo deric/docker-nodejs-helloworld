@@ -21,8 +21,13 @@ node('k8s-slave') {
        }
 
        stage('Build'){
-          def hello_image = docker.build("kubernetes-nodejs-helloworld:${env.BUILD_ID}")
-          //customImage.push()
+        shortCommit = sh(returnStdout: true, script: "git log -n 1 --pretty=format:'%h'").trim()
+        def hello_image = docker.build("kubernetes-nodejs-helloworld:${shortCommit}${env.BUILD_ID}")
+       }
+       post {
+            always {
+                junit('junit.xml')
+            }
        }
     }
     catch (err) {
