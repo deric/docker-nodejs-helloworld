@@ -22,7 +22,7 @@ node('k8s-slave') {
 
        stage('Build'){
         shortCommit = sh(returnStdout: true, script: "git log -n 1 --pretty=format:'%h'").trim()
-        def hello_image = docker.build("kubernetes-nodejs-helloworld:${shortCommit}${env.BUILD_ID}")
+        def hello_image = docker.build("kubernetes-nodejs-helloworld:${shortCommit}-${env.BUILD_ID}")
        }
        post {
             always {
