@@ -8,8 +8,8 @@ RUN curl -s https://deb.nodesource.com/gpgkey/nodesource.gpg.key | apt-key add -
  && apt-get update\
  && apt-get install -y nodejs && apt-get clean && rm -rf /var/lib/apt/lists/*
  
- RUN npm install -g dockerlint
+RUN npm install -g dockerlint
 
-USER ${user}
+USER jenkins
 
 ENTRYPOINT ["jenkins-slave"]
