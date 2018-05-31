@@ -21,10 +21,10 @@ node('k8s-slave') {
        }
 
        stage('Build'){
-        docker.withRegistry('https://docker-registry-docker-registry.docker-registry.svc.cluster.local')
+        //docker.withRegistry('https://registry-docker-registry.docker-registry.svc.cluster.local')
         shortCommit = sh(returnStdout: true, script: "git log -n 1 --pretty=format:'%h'").trim()
         def hello_image = docker.build("kubernetes-nodejs-helloworld:${shortCommit}-${env.BUILD_ID}")
-        hello_image.push()
+        //hello_image.push()
        }
     }
     catch (err) {
