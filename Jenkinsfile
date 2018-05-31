@@ -24,11 +24,11 @@ node('k8s-slave') {
         shortCommit = sh(returnStdout: true, script: "git log -n 1 --pretty=format:'%h'").trim()
         def hello_image = docker.build("kubernetes-nodejs-helloworld:${shortCommit}-${env.BUILD_ID}")
        }
-       post {
-            always {
-                junit('junit.xml')
-            }
-       }
+    }
+    post {
+        always {
+            junit('junit.xml')
+        }
     }
     catch (err) {
 
