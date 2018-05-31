@@ -19,6 +19,11 @@ node('k8s-slave') {
          sh 'npm test'
 
        }
+
+       stage('Build'){
+          def hello_image = docker.build("kubernetes-nodejs-helloworld:${env.BUILD_ID}")
+          //customImage.push()
+       }
     }
     catch (err) {
 
