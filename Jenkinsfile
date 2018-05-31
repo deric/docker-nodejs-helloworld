@@ -17,7 +17,7 @@ node('k8s-slave') {
          sh 'node -v'
          sh 'npm install'
          sh 'npm test'
-
+         junit('junit.xml')
        }
 
        stage('Build'){
@@ -31,11 +31,6 @@ node('k8s-slave') {
 
         currentBuild.result = "FAILURE"
         throw err
-    }
-    post {
-        always {
-            junit('junit.xml')
-        }
     }
 
 }
