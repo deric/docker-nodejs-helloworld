@@ -21,19 +21,21 @@ node('k8s-slave') {
        }
 
        stage('Build'){
+        docker.withRegistry('https://docker-registry-docker-registry.docker-registry.svc.cluster.local')
         shortCommit = sh(returnStdout: true, script: "git log -n 1 --pretty=format:'%h'").trim()
         def hello_image = docker.build("kubernetes-nodejs-helloworld:${shortCommit}-${env.BUILD_ID}")
+        hello_image.push()
        }
-    }
-    post {
-        always {
-            junit('junit.xml')
-        }
     }
     catch (err) {
 
         currentBuild.result = "FAILURE"
         throw err
+    }
+    post {
+        always {
+            junit('junit.xml')
+        }
     }
 
 }
