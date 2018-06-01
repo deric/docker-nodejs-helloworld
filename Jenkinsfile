@@ -75,6 +75,9 @@ spec:
             {
                 shortCommit = sh(returnStdout: true, script: "git log -n 1 --pretty=format:'%h'").trim()
                 sh 'kubectl get deployments --namespace=example-hello-world'
+                sh "cd deployment \
+                    && sed -i s/ver1/${shortCommit}/ hello-2.yaml \
+                    && kubectl apply -f hello-2.yaml"
             }
         }
         catch (err) {
