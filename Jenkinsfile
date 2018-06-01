@@ -81,7 +81,7 @@ spec:
                 sh 'kubectl rollout status deployment/hello-deployment'
                 
             }
-            stage{'Verify'}
+            stage('Verify')
             {
                 sh 'curl http://hello-world.example-hello-world.svc.cluster.local:8080'
             }
