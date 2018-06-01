@@ -42,7 +42,6 @@ spec:
 )
 {
     node(label) {
-        currentBuild.result = "SUCCESS"
         try {
             stage('Checkout'){
                 checkout scm
@@ -67,6 +66,7 @@ spec:
                     docker.withRegistry('https://registry.hub.docker.com', 'dockerhub'){
                         shortCommit = sh(returnStdout: true, script: "git log -n 1 --pretty=format:'%h'").trim()
                         def hello_image = docker.build("tlitovsk/kubernetes-nodejs-helloworld:${shortCommit}")
+                        currentBuild.result = "SUCCESS"
                         if (env.BRANCH_NAME == 'master') {
                             hello_image.push()
                         }
