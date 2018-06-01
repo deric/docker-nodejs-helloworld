@@ -1,3 +1,4 @@
+def namespace = "example-hello-world"
 def label = "mypod-${UUID.randomUUID().toString()}"
 podTemplate(label: label, serviceAccount: "jenkins", cloud: "example", yaml: """
 apiVersion: v1 
@@ -74,16 +75,16 @@ spec:
             stage('Deploy')
             {
                 shortCommit = sh(returnStdout: true, script: "git log -n 1 --pretty=format:'%h'").trim()
-                sh 'kubectl get deployments --namespace=example-hello-world'
+                sh "kubectl get deployments --namespace=${namespace}"
                 sh "cd deployment \
                     && sed -i s/ver1/${shortCommit}/ hello-2.yaml \
-                    && kubectl apply -f hello-2.yaml"
-                sh 'kubectl rollout status deployment/hello-deployment'
+                    && kubectl apply -f hello-2.yaml --namespace=${namespace}"
+                sh "kubectl rollout status deployment/hello-deployment --namespace=${namespace}"
                 
             }
             stage('Verify')
             {
-                sh 'curl http://hello-world.example-hello-world.svc.cluster.local:8080'
+                sh 'curl http://hello-service.example-hello-world.svc.cluster.local:8080'
             }
         }
         catch (err) {
