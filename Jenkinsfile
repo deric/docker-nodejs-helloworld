@@ -1,6 +1,8 @@
 node('k8s-slave') {
     currentBuild.result = "SUCCESS"
     try {
+       shortCommit = sh(returnStdout: true, script: "git log -n 1 --pretty=format:'%h'").trim()
+
        stage('Checkout'){
           checkout scm
        }
@@ -22,10 +24,15 @@ node('k8s-slave') {
 
        stage('Build'){
             docker.withRegistry('https://registry.hub.docker.com', 'dockerhub'){
-                shortCommit = sh(returnStdout: true, script: "git log -n 1 --pretty=format:'%h'").trim()
-                def hello_image = docker.build("tlitovsk/kubernetes-nodejs-helloworld:${shortCommit}-${env.BUILD_ID}")
-                hello_image.push()
+                def hello_image = docker.build("tlitovsk/kubernetes-nodejs-helloworld:${shortCommit}")
+                if (env.BRANCH_NAME == 'master') {
+                    hello_image.push()
+                }
             }
+       }
+       stage('Deploy')
+       {
+           sh 'kubectl'
        }
     }
     catch (err) {
