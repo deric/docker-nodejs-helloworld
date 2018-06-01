@@ -1,5 +1,5 @@
 def label = "mypod-${UUID.randomUUID().toString()}"
-podTemplate(label: label, cloud: "example", yaml: """
+podTemplate(label: label, serviceAccount: "jenkins", cloud: "example", yaml: """
 apiVersion: v1 
 kind: Pod 
 metadata: 
@@ -43,39 +43,39 @@ spec:
     node(label) {
         currentBuild.result = "SUCCESS"
         try {
-        stage('Checkout'){
-            checkout scm
-        }
+            stage('Checkout'){
+                checkout scm
+            }
 
-        stage('Lint Dockerfiles')
-        {
-            sh 'dockerlint Dockerfile'
-            sh 'dockerlint TestContainer/Dockerfile'
-        }
+            stage('Lint Dockerfiles')
+            {
+                sh 'dockerlint Dockerfile'
+                sh 'dockerlint TestContainer/Dockerfile'
+            }
 
-        stage('Test'){
-            env.NODE_ENV = "test"
-            print "Environment will be : ${env.NODE_ENV}"
-            sh 'node -v'
-            sh 'npm install'
-            sh 'npm test'
-            junit('junit.xml')
-        }
+            stage('Test'){
+                env.NODE_ENV = "test"
+                print "Environment will be : ${env.NODE_ENV}"
+                sh 'node -v'
+                sh 'npm install'
+                sh 'npm test'
+                junit('junit.xml')
+            }
 
-        stage('Build'){
-                docker.withRegistry('https://registry.hub.docker.com', 'dockerhub'){
-                    shortCommit = sh(returnStdout: true, script: "git log -n 1 --pretty=format:'%h'").trim()
-                    def hello_image = docker.build("tlitovsk/kubernetes-nodejs-helloworld:${shortCommit}")
-                    if (env.BRANCH_NAME == 'master') {
-                        hello_image.push()
+            stage('Build'){
+                    docker.withRegistry('https://registry.hub.docker.com', 'dockerhub'){
+                        shortCommit = sh(returnStdout: true, script: "git log -n 1 --pretty=format:'%h'").trim()
+                        def hello_image = docker.build("tlitovsk/kubernetes-nodejs-helloworld:${shortCommit}")
+                        if (env.BRANCH_NAME == 'master') {
+                            hello_image.push()
+                        }
                     }
-                }
-        }
-        stage('Deploy')
-        {
-            shortCommit = sh(returnStdout: true, script: "git log -n 1 --pretty=format:'%h'").trim()
-            sh 'kubectl get deployments --namespace=example-hello-world'
-        }
+            }
+            stage('Deploy')
+            {
+                shortCommit = sh(returnStdout: true, script: "git log -n 1 --pretty=format:'%h'").trim()
+                sh 'kubectl get deployments --namespace=example-hello-world'
+            }
         }
         catch (err) {
 
