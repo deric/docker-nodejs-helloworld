@@ -1,5 +1,5 @@
 def label = "mypod-${UUID.randomUUID().toString()}"
-podTemplate(label: label, yaml: """
+podTemplate(label: label,cloud : "example", yaml: """
 apiVersion: v1 
 kind: Pod 
 metadata: 
@@ -74,7 +74,7 @@ node(label) {
        stage('Deploy')
        {
            shortCommit = sh(returnStdout: true, script: "git log -n 1 --pretty=format:'%h'").trim()
-           sh 'kubectl'
+           sh 'kubectl get deployments'
        }
     }
     catch (err) {
