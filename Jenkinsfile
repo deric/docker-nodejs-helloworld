@@ -78,6 +78,12 @@ spec:
                 sh "cd deployment \
                     && sed -i s/ver1/${shortCommit}/ hello-2.yaml \
                     && kubectl apply -f hello-2.yaml"
+                sh 'kubectl rollout status deployment/hello-deployment'
+                
+            }
+            stage{'Verify'}
+            {
+                sh 'curl http://hello-world.example-hello-world.svc.cluster.local:8080'
             }
         }
         catch (err) {
