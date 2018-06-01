@@ -67,24 +67,26 @@ spec:
                     docker.withRegistry('https://registry.hub.docker.com', 'dockerhub'){
                         shortCommit = sh(returnStdout: true, script: "git log -n 1 --pretty=format:'%h'").trim()
                         def hello_image = docker.build("tlitovsk/kubernetes-nodejs-helloworld:${shortCommit}")
-                        //if (env.BRANCH_NAME == 'master') {
+                        if (env.BRANCH_NAME == 'master') {
                             hello_image.push()
-                        //}
+                        }
                     }
             }
-            stage('Deploy')
-            {
-                shortCommit = sh(returnStdout: true, script: "git log -n 1 --pretty=format:'%h'").trim()
-                sh "kubectl get deployments --namespace=${namespace}"
-                sh "cd deployment \
-                    && sed -i s/ver1/${shortCommit}/ hello-2.yaml \
-                    && kubectl apply -f hello-2.yaml --namespace=${namespace}"
-                sh "kubectl rollout status deployment/hello-deployment --namespace=${namespace}"
-                
-            }
-            stage('Verify')
-            {
-                sh 'curl http://hello-service.example-hello-world.svc.cluster.local:8080'
+            if (env.BRANCH_NAME == 'master') {
+                stage('Deploy')
+                {
+                    shortCommit = sh(returnStdout: true, script: "git log -n 1 --pretty=format:'%h'").trim()
+                    sh "kubectl get deployments --namespace=${namespace}"
+                    sh "cd deployment \
+                        && sed -i s/ver1/${shortCommit}/ hello-2.yaml \
+                        && kubectl apply -f hello-2.yaml --namespace=${namespace}"
+                    sh "kubectl rollout status deployment/hello-deployment --namespace=${namespace}"
+                    
+                }
+                stage('Verify')
+                {
+                    sh 'curl http://hello-service.example-hello-world.svc.cluster.local:8080'
+                }
             }
         }
         catch (err) {
