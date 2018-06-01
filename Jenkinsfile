@@ -74,7 +74,7 @@ spec:
         stage('Deploy')
         {
             shortCommit = sh(returnStdout: true, script: "git log -n 1 --pretty=format:'%h'").trim()
-            sh 'kubectl get deployments'
+            sh 'kubectl get deployments --namespace=example-hello-world'
         }
         }
         catch (err) {
