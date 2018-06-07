@@ -1,6 +1,6 @@
-<testsuites name="jest tests" tests="1" failures="0" time="20.576">
-  <testsuite name="Test the root path" errors="0" failures="0" skipped="0" timestamp="2018-06-07T10:02:40" time="12.027" tests="1">
-    <testcase classname="Test the root path It should response the GET method" name="Test the root path It should response the GET method" time="0.419">
+<testsuites name="jest tests" tests="1" failures="0" time="40.959">
+  <testsuite name="Test the root path" errors="0" failures="0" skipped="0" timestamp="2018-06-07T10:16:31" time="25.475" tests="1">
+    <testcase classname="Test the root path It should response the GET method" name="Test the root path It should response the GET method" time="1.351">
     </testcase>
   </testsuite>
 </testsuites>

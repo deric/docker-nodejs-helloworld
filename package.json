@@ -8,9 +8,9 @@
     "express": "4.16.1"
   },
   "scripts": {
-    "start": "node ./server.js",
-    "pretest": "eslint *.js",
-    "test": "jest --ci --testResultsProcessor=jest-junit --coverage"
+    "start": "node ./src/server.js",
+    "pretest": "eslint /src/*.js",
+    "test": "jest /src --ci --testResultsProcessor=jest-junit --coverage"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
