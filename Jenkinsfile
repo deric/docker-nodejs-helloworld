@@ -41,7 +41,13 @@ spec:
                 sh 'dockerlint Dockerfile'
                 sh 'dockerlint TestContainer/Dockerfile'
             }
-
+            stage ('SonarQube analysis')
+            {
+                withSonarQubeEnv('QubeR') {
+                // requires SonarQube Scanner for Maven 3.2+
+                    sh 'sonarqube-scanner -Dsonar.sources=.'
+                }
+            }
             stage('Test'){
                 env.NODE_ENV = "test"
                 print "Environment will be : ${env.NODE_ENV}"

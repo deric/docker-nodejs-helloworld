@@ -13,7 +13,7 @@ RUN curl -s https://deb.nodesource.com/gpgkey/nodesource.gpg.key | apt-key add -
  && apt-get update\
  && apt-get install -y nodejs docker-ce kubectl && apt-get clean && rm -rf /var/lib/apt/lists/*
  
-RUN npm install -g dockerlint
+RUN npm install -g dockerlint sonarqube-scanner
 
 USER jenkins
 
