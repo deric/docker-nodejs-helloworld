@@ -77,6 +77,7 @@ spec:
                         && kubectl create -f hello-2.yaml --namespace=${testNamespace}"
                     sh "kubectl rollout status deployment/hello-deployment --namespace=${testNamespace}"
                     sh 'curl http://hello-service.${testNamespace}.svc.cluster.local:8080'
+                    sh "kubectl delete ns ${testNamespace}"
 
             }
 
