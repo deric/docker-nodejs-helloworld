@@ -41,13 +41,6 @@ spec:
                 sh 'dockerlint Dockerfile'
                 sh 'dockerlint TestContainer/Dockerfile'
             }
-            stage ('SonarQube analysis')
-            {
-                withSonarQubeEnv('QubeR') {
-                // requires SonarQube Scanner for Maven 3.2+
-                    sh '/usr/lib/node_modules/sonarqube-scanner/dist/bin/sonar-scanner -Dsonar.sources=.'
-                }
-            }
             stage('Test'){
                 env.NODE_ENV = "test"
                 print "Environment will be : ${env.NODE_ENV}"
@@ -56,7 +49,13 @@ spec:
                 sh 'npm test'
                 junit('junit.xml')
             }
-
+            stage ('SonarQube analysis')
+            {
+                withSonarQubeEnv('QubeR') {
+                // requires SonarQube Scanner for Maven 3.2+
+                    sh '/usr/lib/node_modules/sonarqube-scanner/dist/bin/sonar-scanner'
+                }
+            }
             stage('Build'){
                     docker.withRegistry('https://registry.hub.docker.com', 'dockerhub'){
                         shortCommit = sh(returnStdout: true, script: "git log -n 1 --pretty=format:'%h'").trim()
