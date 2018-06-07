@@ -20,3 +20,14 @@ describe('Test the world path', () => {
     });
   });
 });
+
+describe('Test the world path', () => {
+  test('It should response the GET method', (done) => {
+    request(app).get('/vodafone').then((response) => {
+      expect(response.statusCode).toBe(200);
+      expect(response.text).toBe('Hello Vodafone\n');
+      done();
+    });
+  });
+});
+
