@@ -45,7 +45,7 @@ spec:
             {
                 withSonarQubeEnv('QubeR') {
                 // requires SonarQube Scanner for Maven 3.2+
-                    sh 'sonarqube-scanner -Dsonar.sources=.'
+                    sh '/usr/lib/node_modules/sonarqube-scanner/dist/bin/sonar-scanner -Dsonar.sources=.'
                 }
             }
             stage('Test'){
