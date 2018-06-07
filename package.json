@@ -9,8 +9,8 @@
   },
   "scripts": {
     "start": "node ./src/server.js",
-    "pretest": "eslint /src/*.js",
-    "test": "jest /src --ci --testResultsProcessor=jest-junit --coverage"
+    "pretest": "eslint /src/*.js && eslint /tests/*.js",
+    "test": "jest . --ci --testResultsProcessor=jest-junit --coverage"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
