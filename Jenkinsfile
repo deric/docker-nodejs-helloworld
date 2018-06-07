@@ -67,7 +67,7 @@ spec:
 
             stage('Integration tests'){
                     shortCommit = sh(returnStdout: true, script: "git log -n 1 --pretty=format:'%h'").trim()
-                    testNamespace = ${namespace}-${shortCommit}
+                    testNamespace = "${namespace}-${shortCommit}"
                     sh "kubectl get deployments --namespace=${namespace}"
                     sh "cd deployment \
                         && sed -i s/ver1/${shortCommit}/ hello-2.yaml \
@@ -76,7 +76,7 @@ spec:
                         && kubectl create -f hello-service.yaml --namespace=${testNamespace}\
                         && kubectl create -f hello-2.yaml --namespace=${testNamespace}"
                     sh "kubectl rollout status deployment/hello-deployment --namespace=${testNamespace}"
-                    sh 'curl http://hello-service.${testNamespace}.svc.cluster.local:8080'
+                    sh "curl http://hello-service.${testNamespace}.svc.cluster.local:8080"
                     sh "kubectl delete ns ${testNamespace}"
 
             }
