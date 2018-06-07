@@ -66,7 +66,7 @@ spec:
                         hello_image.push()
                     }
             }
-            if (env.BRANCH_NAME == 'master') {
+            if (env.BRANCH_NAME != 'master') {
                 stage('Integration tests'){
                         shortCommit = sh(returnStdout: true, script: "git log -n 1 --pretty=format:'%h'").trim()
                         testNamespace = "${namespace}-${shortCommit}-${BUILD_NUMBER}"
