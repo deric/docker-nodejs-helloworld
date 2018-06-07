@@ -21,7 +21,8 @@ describe('Test the world path', () => {
   });
 });
 
-describe('Test the world path', () => {
+/*
+describe('Test the vodafone path', () => {
   test('It should response the GET method', (done) => {
     request(app).get('/vodafone').then((response) => {
       expect(response.statusCode).toBe(200);
@@ -30,4 +31,4 @@ describe('Test the world path', () => {
     });
   });
 });
-
+*/
