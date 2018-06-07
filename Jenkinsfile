@@ -77,6 +77,7 @@ spec:
                             && kubectl create ns ${testNamespace}\
                             && kubectl create -f hello-3-service.yaml --namespace=${testNamespace}\
                             && kubectl create -f hello-2.yaml --namespace=${testNamespace}"
+                        sh "sleep 3"
                         sh "kubectl rollout status deployment/hello-deployment --namespace=${testNamespace}"
                         sh "curl http://hello-service.${testNamespace}.svc.cluster.local:8080"
                         sh "curl http://hello-service.${testNamespace}.svc.cluster.local:8080/world"
