@@ -61,11 +61,25 @@ spec:
                         shortCommit = sh(returnStdout: true, script: "git log -n 1 --pretty=format:'%h'").trim()
                         def hello_image = docker.build("tlitovsk/kubernetes-nodejs-helloworld:${shortCommit}")
                         currentBuild.result = "SUCCESS"
-                        if (env.BRANCH_NAME == 'master') {
-                            hello_image.push()
-                        }
+                        hello_image.push()
                     }
             }
+
+            stage('Integration tests'){
+                    shortCommit = sh(returnStdout: true, script: "git log -n 1 --pretty=format:'%h'").trim()
+                    testNamespace = ${namespace}-${shortCommit}
+                    sh "kubectl get deployments --namespace=${namespace}"
+                    sh "cd deployment \
+                        && sed -i s/ver1/${shortCommit}/ hello-2.yaml \
+                        && kubectl delete ns ${testNamespace} || true \
+                        && kubectl create ns ${testNamespace}\
+                        && kubectl create -f hello-service.yaml --namespace=${testNamespace}
+                        && kubectl create -f hello-2.yaml --namespace=${testNamespace}"
+                    sh "kubectl rollout status deployment/hello-deployment --namespace=${testNamespace}"
+                    sh 'curl http://hello-service.${testNamespace}.svc.cluster.local:8080'
+
+            }
+
             if (env.BRANCH_NAME == 'master') {
                 stage('Deploy')
                 {
