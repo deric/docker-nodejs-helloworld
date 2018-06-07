@@ -67,7 +67,7 @@ spec:
 
             stage('Integration tests'){
                     shortCommit = sh(returnStdout: true, script: "git log -n 1 --pretty=format:'%h'").trim()
-                    testNamespace = "${namespace}-${shortCommit}"
+                    testNamespace = "${namespace}-${shortCommit}-${BUILD_NUMBER}"
                     sh "kubectl get deployments --namespace=${testNamespace}"
                     sh "cd deployment \
                         && sed -i s/ver1/${shortCommit}/ hello-2.yaml \
@@ -99,8 +99,10 @@ spec:
             }
         }
         catch (err) {
-
             currentBuild.result = "FAILURE"
+            shortCommit = sh(returnStdout: true, script: "git log -n 1 --pretty=format:'%h'").trim()
+            testNamespace = "${namespace}-${shortCommit}-${BUILD_NUMBER}"
+            sh 'kubectl delete ns ${testNamespace} || true'
             throw err
         }
 
