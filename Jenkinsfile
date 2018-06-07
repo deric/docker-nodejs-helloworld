@@ -49,11 +49,13 @@ spec:
                 sh 'npm test'
                 junit('junit.xml')
             }
-            stage ('SonarQube analysis')
-            {
-                withSonarQubeEnv('QubeR') {
-                // requires SonarQube Scanner for Maven 3.2+
-                    sh '/usr/lib/node_modules/sonarqube-scanner/dist/bin/sonar-scanner'
+            if (env.BRANCH_NAME != 'master') {
+                stage ('SonarQube analysis')
+                {
+                    withSonarQubeEnv('QubeR') {
+                    // requires SonarQube Scanner for Maven 3.2+
+                        sh '/usr/lib/node_modules/sonarqube-scanner/dist/bin/sonar-scanner'
+                    }
                 }
             }
             stage('Build'){
@@ -64,24 +66,24 @@ spec:
                         hello_image.push()
                     }
             }
-
-            stage('Integration tests'){
-                    shortCommit = sh(returnStdout: true, script: "git log -n 1 --pretty=format:'%h'").trim()
-                    testNamespace = "${namespace}-${shortCommit}-${BUILD_NUMBER}"
-                    sh "kubectl get deployments --namespace=${testNamespace}"
-                    sh "cd deployment \
-                        && sed -i s/ver1/${shortCommit}/ hello-2.yaml \
-                        && kubectl delete ns ${testNamespace} || true \
-                        && kubectl create ns ${testNamespace}\
-                        && kubectl create -f hello-3-service.yaml --namespace=${testNamespace}\
-                        && kubectl create -f hello-2.yaml --namespace=${testNamespace}"
-                    sh "kubectl rollout status deployment/hello-deployment --namespace=${testNamespace}"
-                    sh "curl http://hello-service.${testNamespace}.svc.cluster.local:8080"
-                    sh "kubectl delete ns ${testNamespace}"
-
-            }
-
             if (env.BRANCH_NAME == 'master') {
+                stage('Integration tests'){
+                        shortCommit = sh(returnStdout: true, script: "git log -n 1 --pretty=format:'%h'").trim()
+                        testNamespace = "${namespace}-${shortCommit}-${BUILD_NUMBER}"
+                        sh "kubectl get deployments --namespace=${testNamespace}"
+                        sh "cd deployment \
+                            && sed -i s/ver1/${shortCommit}/ hello-2.yaml \
+                            && kubectl delete ns ${testNamespace} || true \
+                            && kubectl create ns ${testNamespace}\
+                            && kubectl create -f hello-3-service.yaml --namespace=${testNamespace}\
+                            && kubectl create -f hello-2.yaml --namespace=${testNamespace}"
+                        sh "kubectl rollout status deployment/hello-deployment --namespace=${testNamespace}"
+                        sh "curl http://hello-service.${testNamespace}.svc.cluster.local:8080"
+                        sh "curl http://hello-service.${testNamespace}.svc.cluster.local:8080/world"
+                        sh "kubectl delete ns ${testNamespace}"
+
+                }
+            }else{
                 stage('Deploy')
                 {
                     shortCommit = sh(returnStdout: true, script: "git log -n 1 --pretty=format:'%h'").trim()

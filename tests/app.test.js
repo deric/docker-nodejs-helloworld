@@ -15,7 +15,7 @@ describe('Test the world path', () => {
   test('It should response the GET method', (done) => {
     request(app).get('/world').then((response) => {
       expect(response.statusCode).toBe(200);
-      expect(response.text).toBe('Hello world1\n');
+      expect(response.text).toBe('Hello world\n');
       done();
     });
   });
