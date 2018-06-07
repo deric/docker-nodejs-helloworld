@@ -13,17 +13,6 @@ spec:
         env: 
           - name: DOCKER_HOST 
             value: tcp://localhost:2375 
-            env:
-          - name: DOCKERHUB_USERNAME
-            valueFrom:
-              secretKeyRef:
-                name: docker-hub-access
-                key: user
-          - name: DOCKERHUB_PASSWORD
-            valueFrom:
-              secretKeyRef:
-                name: docker-hub-access
-                key: password
       - name: dind-daemon 
         image: docker:18-dind 
         resources: 
