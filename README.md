@@ -3,7 +3,6 @@
 ## To build a container:
 docker build -t tlitovsk/kubernetes-nodejs-helloworld:ver1 .
 docker build -t tlitovsk/kubernetes-nodejs-helloworld:ver2 .
-docker build -t tlitovsk/kubernetes-nodejs-helloworld:latest .
 
 ## Push it
 docker push tlitovsk/kubernetes-nodejs-helloworld:ver1
@@ -16,4 +15,5 @@ https://128.199.223.176/hello
 
 ## To build the test container
 docker build --rm -t tlitovsk/jenkins-jnlp:latest .
+
 
