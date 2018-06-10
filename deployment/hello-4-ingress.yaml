@@ -4,9 +4,11 @@ metadata:
   name: hello-ingress
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /
+    certmanager.k8s.io/cluster-issuer: letsencrypt-prod
 spec:
   rules:
-  - http:
+  - host: prod.devtrails.co.nz
+    http:
       paths:
       - path: /hello
         backend:
