@@ -1,0 +1,19 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: hello-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+  - host: test.devtrails.co.nz
+    http:
+      paths:
+      - path: /hello
+        backend:
+          serviceName: hello-service
+          servicePort: 8080
+  tls:
+  - secretName: test-devtrails-crt-secret
+    hosts:
+    - test.devtrails.co.nz

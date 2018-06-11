@@ -14,4 +14,4 @@ WORKDIR /web
 RUN npm install
 
 EXPOSE  8080
-ENTRYPOINT ["nodejs", "./index.js"]
+ENTRYPOINT ["npm", "start"]
