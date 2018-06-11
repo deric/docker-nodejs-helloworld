@@ -82,6 +82,7 @@ spec:
                         sh "curl http://hello-service.${testNamespace}.svc.cluster.local:8080"
                         sh "curl http://hello-service.${testNamespace}.svc.cluster.local:8080/world"
                         sh "curl http://hello-service.${testNamespace}.svc.cluster.local:8080/vodafone"                        //
+                        sh "curl http://hello-service.${namespace}.svc.cluster.local:8080"
                         sh "kubectl delete ns ${testNamespace}"
 
                 }
@@ -98,7 +99,7 @@ spec:
                 }
                 stage('Verify')
                 {
-                    sh 'curl http://hello-service.example-hello-world.svc.cluster.local:8080'
+                    sh "curl http://hello-service.${namespace}.svc.cluster.local:8080"
                 }
             }
         }
