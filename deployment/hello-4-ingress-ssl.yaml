@@ -6,7 +6,7 @@ metadata:
     nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
   rules:
-  - host: prod.devtrails.co.nz
+  - host: test.devtrails.co.nz
     http:
       paths:
       - path: /hello
@@ -14,6 +14,6 @@ spec:
           serviceName: hello-service
           servicePort: 8080
   tls:
-  - secretName: prod-devtrails-crt-secret
+  - secretName: test-devtrails-crt-secret
     hosts:
-    - prod.devtrails.co.nz
+    - test.devtrails.co.nz
