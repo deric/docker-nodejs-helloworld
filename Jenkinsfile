@@ -98,7 +98,7 @@ spec:
                 }
                 stage('Verify')
                 {
-                    sh "curl https://prod.devtrails.co.nz/hello"
+                    sh "curl https://test.devtrails.co.nz/hello"
                 }
             }
         }
